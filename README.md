@@ -37,7 +37,7 @@ Le rendu se fait sur **votre fork**. Avant la date limite, complétez ce bloc (r
 
 ```text
 Nom       : Amani
-Prénom    : Jean philippe
+Prénom    : Jean 
 
 Compte admin (ROLE_ADMIN)
   Email        : jeanamani286@gmail.com
