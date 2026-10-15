@@ -36,8 +36,8 @@ Le design est **déjà fait** : toutes les pages existent en HTML/CSS statique. 
 Le rendu se fait sur **votre fork**. Avant la date limite, complétez ce bloc (remplacez les `...`) et commitez-le :
 
 ```text
-Nom       : ...
-Prénom    : ...
+Nom       : Amani
+Prénom    : Jean philippe
 
 Compte admin (ROLE_ADMIN)
   Email        : ...
