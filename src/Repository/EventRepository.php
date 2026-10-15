@@ -19,6 +19,22 @@ class EventRepository extends ServiceEntityRepository
     {
         return $this->findBy(['validated' => false], ['date' => 'ASC']);
     }
+    public function findUpcomingValidated(?string $category = null): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.validated = :validated')
+            ->andWhere('e.date >= :now')
+            ->setParameter('validated', true)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->orderBy('e.date', 'ASC');
+
+        if ($category) {
+            $qb->andWhere('e.category = :category')
+            ->setParameter('category', $category);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 
 //    /**
 //     * @return Event[] Returns an array of Event objects

@@ -1,49 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Soirée jazz au Kiosque{% endblock %}
+{% block title %}{{ event.title }}{% endblock %}
 
 {% block body %}
+    {% set labels = {concert: 'Concert', conference: 'Conférence', atelier: 'Atelier', sport: 'Sport'} %}
+
     <a class="back-link" href="{{ path('app_home') }}">← Retour aux événements</a>
 
-    <article class="cat-concert">
-        <header class="detail-hero" style="background-image: url('{{ asset('images/concert.jpg') }}')">
+    {% for type in ['success', 'error'] %}
+        {% for message in app.flashes(type) %}
+            <div class="flash flash-{{ type }}">{{ message }}</div>
+        {% endfor %}
+    {% endfor %}
+
+    <article class="cat-{{ event.category }}">
+        <header class="detail-hero" style="background-image: url('{{ asset(event.image ? 'uploads/' ~ event.image : 'images/concert.jpg') }}')">
             <div class="detail-hero-content">
-                <span class="badge">Concert</span>
-                <h1>Soirée jazz au Kiosque</h1>
-                <p>Samedi 07/11/2026 · 20h30</p>
+                <span class="badge">{{ labels[event.category] ?? event.category }}</span>
+                <h1>{{ event.title }}</h1>
+                <p>{{ event.date|date('d/m/Y') }} · {{ event.date|date('H\\hi') }}</p>
             </div>
         </header>
 
         <div class="detail-grid">
             <section class="card">
                 <h2>Informations</h2>
-                <p>Le quartet CuRuba vous propose une soirée de jazz antillais au Kiosque du parc municipal.</p>
-                <p>Programme : 20h30 première partie, 21h30 concert principal. Buvette sur place, entrée libre sur inscription.</p>
+                <p>{{ event.description|nl2br }}</p>
             </section>
 
             <aside class="card booking">
-                <p class="places"><strong>12</strong> places restantes sur 80</p>
-                <div class="progress"><span style="width: 85%"></span></div>
+                {% if isFull %}
+                    <p class="places"><span class="badge badge-full">Complet</span></p>
+                {% else %}
+                    <p class="places"><strong>{{ remaining }}</strong> places restantes sur {{ event.seats }}</p>
+                {% endif %}
+                <div class="progress"><span style="width: {{ percent }}%"></span></div>
 
-                <form method="post">
-                    <button type="submit" class="btn btn-block">S'inscrire</button>
-                </form>
-
-                {# Variante quand l'utilisateur est déjà inscrit :
-                <p class="muted">Vous êtes inscrit à cet événement.</p>
-                <form method="post">
-                    <button type="submit" class="btn btn-secondary btn-block">Se désinscrire</button>
-                </form>
-                #}
-
-                {# Variante quand l'événement est complet :
-                <p class="places"><span class="badge badge-full">Complet</span></p>
-                <button class="btn btn-block" disabled>Complet</button>
-                #}
-
-                {# Variante quand l'utilisateur n'est pas connecté :
-                <a class="btn btn-block" href="{{ path('app_login') }}">Connectez-vous pour vous inscrire</a>
-                #}
+                {% if not app.user %}
+                    <a class="btn btn-block" href="{{ path('app_login') }}">Connectez-vous pour vous inscrire</a>
+                {% elseif isRegistered %}
+                    <p class="muted">Vous êtes inscrit à cet événement.</p>
+                    <form method="post" action="{{ path('app_event_unregister', {id: event.id}) }}">
+                        <button type="submit" class="btn btn-secondary btn-block">Se désinscrire</button>
+                    </form>
+                {% elseif isFull %}
+                    <button class="btn btn-block" disabled>Complet</button>
+                {% else %}
+                    <form method="post" action="{{ path('app_event_register', {id: event.id}) }}">
+                        <button type="submit" class="btn btn-block">S'inscrire</button>
+                    </form>
+                {% endif %}
             </aside>
         </div>
     </article>

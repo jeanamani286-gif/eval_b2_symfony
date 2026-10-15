@@ -40,12 +40,12 @@ Nom       : Amani
 Prénom    : Jean philippe
 
 Compte admin (ROLE_ADMIN)
-  Email        : ...
-  Mot de passe : ...
+  Email        : jeanamani286@gmail.com
+  Mot de passe : Jean76??
 
 Compte utilisateur
-  Email        : ...
-  Mot de passe : ...
+  Email        : ajp8126@gmail.com
+  Mot de passe : Azerty123
 ```
 
 Commitez aussi la **base SQLite** avec quelques événements, utilisateurs et inscriptions de test. Le dossier `var/` étant ignoré par Git, il faut forcer l'ajout :

@@ -37,7 +37,7 @@
                 <li class="event-card cat-{{ event.category }}">
                     <div class="event-media">
                         {% if event.image %}
-                            <img class="event-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                            <img class="event-image" src="{{ asset('uploads/' ~ event.image) }}" alt="">
                         {% endif %}
                         <div class="event-date">
                             <span class="day">{{ event.date|date('d') }}</span>
